@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>LVA List</title>
+</head>
+<body>
+<h1>List of Exercises</h1>
+<table border="1px">
+    <tr>
+        <th>ID</th>
+        <th>Submission</th>
+        <th>Feedback</th>
+        <th>Student</th>
+        <th>LVA</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="exercise : ${exercises}">
+        <td th:text="${exercise.id}"></td>
+        <td th:text="${exercise.submission}"></td>
+        <td th:text="${exercise.feedback}"></td>
+        <td th:text="${exercise.student.firstName + ' ' + exercise.student.lastName}"></td>
+        <td th:text="${exercise.lva.name}"></td>
+        <td>
+            <a th:href="@{/exerciseCorrection/edit/{id}(id=${exercise.id})}">Edit</a>
+            <a th:href="@{/exerciseCorrection/delete/{id}(id=${exercise.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+<a th:href="@{/}">Back Home</a>
+</body>
+</html>

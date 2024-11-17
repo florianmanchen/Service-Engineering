@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add/Edit LVA Leader</title>
+</head>
+<body>
+<h1 th:text="${lvaLeader.id == null ? 'Add New LVA Leader' : 'Edit LVA Leader'}"></h1>
+
+<form th:if="${lvaLeader.id} == null" th:action="@{/lvaLeaders/add}" th:object="${lvaLeader}" method="post">
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" th:field="*{lastName}" required /><br>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" th:field="*{firstName}" required /><br>
+    <button type="submit">Save</button>
+</form>
+
+<form th:if="${lvaLeader.id} != null" th:action="@{/lvaLeaders/edit/{id}(id=${lvaLeader.id})}" th:object="${lvaLeader}" method="post">
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" th:field="*{lastName}" required /><br>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" th:field="*{firstName}" required /><br>
+    <button type="submit">Save</button>
+</form>
+
+
+<a th:href="@{/lvaLeaders/all}">Back to List</a>
+</body>
+</html>

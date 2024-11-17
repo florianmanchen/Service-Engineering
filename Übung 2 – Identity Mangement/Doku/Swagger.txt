@@ -1,0 +1,545 @@
+openapi: 3.0.1
+info:
+  title: LVA Service API
+  description: API documentation for managing LVA, students, exercises, and related entities.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082
+tags:
+  - name: Exercise Correction
+    description: Endpoints related to exercise corrections.
+  - name: Exercise Submission
+    description: Endpoints related to submitting exercises.
+  - name: LVA
+    description: Endpoints for managing LVAs.
+  - name: LVA Leaders
+    description: Endpoints for managing LVA leaders.
+  - name: Students
+    description: Endpoints for managing students.
+
+paths:
+  /exerciseCorrection/all:
+    get:
+      tags:
+        - Exercise Correction
+      summary: Get all exercises
+      responses:
+        '200':
+          description: A list of exercises
+
+  /exerciseCorrection/edit/{id}:
+    get:
+      tags:
+        - Exercise Correction
+      summary: Get form to edit an exercise
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Exercise ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Edit exercise form
+
+    post:
+      tags:
+        - Exercise Correction
+      summary: Edit an exercise
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Exercise ID
+          schema:
+            type: integer
+      requestBody:
+        description: Exercise data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exercise'
+      responses:
+        '200':
+          description: Exercise updated
+
+  /exerciseCorrection/delete/{id}:
+    get:
+      tags:
+        - Exercise Correction
+      summary: Delete an exercise
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Exercise ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Exercise deleted
+
+  /exerciseSubmission/add:
+    get:
+      tags:
+        - Exercise Submission
+      summary: Get form to add an exercise
+      responses:
+        '200':
+          description: Add exercise form
+
+    post:
+      tags:
+        - Exercise Submission
+      summary: Submit a new exercise
+      requestBody:
+        description: Exercise data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exercise'
+      responses:
+        '200':
+          description: Exercise submitted
+
+  /lvas/all:
+    get:
+      tags:
+        - LVA
+      summary: List all LVAs
+      description: Retrieve a list of all LVAs.
+      responses:
+        '200':
+          description: A list of LVAs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lva'
+
+  /lvas/add:
+    get:
+      tags:
+        - LVA
+      summary: Get form to add a new LVA
+      description: Returns a form for creating a new LVA.
+      responses:
+        '200':
+          description: LVA form page
+
+    post:
+      tags:
+        - LVA
+      summary: Add a new LVA
+      description: Submits form data to create a new LVA.
+      requestBody:
+        description: LVA data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lva'
+      responses:
+        '201':
+          description: LVA created successfully
+          headers:
+            Location:
+              description: URL of the created LVA
+              schema:
+                type: string
+
+  /lvas/edit/{id}:
+    get:
+      tags:
+        - LVA
+      summary: Get form to edit an existing LVA
+      description: Returns a form for editing an LVA.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA to edit
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: LVA edit form page
+
+    post:
+      tags:
+        - LVA
+      summary: Edit an existing LVA
+      description: Submits form data to update an existing LVA.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA to edit
+          schema:
+            type: integer
+      requestBody:
+        description: Updated LVA data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lva'
+      responses:
+        '200':
+          description: LVA updated successfully
+
+  /lvas/{id}/students:
+    get:
+      tags:
+        - LVA
+      summary: View students in an LVA
+      description: Retrieve a list of students associated with a specific LVA.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of students in the specified LVA
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+
+  /lvas/delete/{id}:
+    get:
+      tags:
+        - LVA
+      summary: Delete an LVA
+      description: Deletes a specific LVA by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA to delete
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: LVA deleted successfully
+
+  /lvas/{id}/students/delete/{idStudent}:
+    get:
+      tags:
+        - LVA
+      summary: Remove a student from an LVA
+      description: Removes a specific student from a specific LVA.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA
+          schema:
+            type: integer
+        - name: idStudent
+          in: path
+          required: true
+          description: ID of the student to remove
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student removed successfully
+
+  /lvas/{id}/students/add:
+    get:
+      tags:
+        - LVA
+      summary: Get form to add a student to an LVA
+      description: Returns a form for associating a student with a specific LVA.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: LVA-student association form
+
+  /lvas/{id}/students/add/{idStudent}:
+    post:
+      tags:
+        - LVA
+      summary: Add a student to an LVA
+      description: Associates a student with a specific LVA.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA
+          schema:
+            type: integer
+        - name: idStudent
+          in: path
+          required: true
+          description: ID of the student to add
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Student added to LVA successfully
+
+  /students/all:
+    get:
+      tags:
+        - Students
+      summary: List all students
+      description: Retrieve a list of all students.
+      responses:
+        '200':
+          description: A list of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+
+  /students/add:
+    get:
+      tags:
+        - Students
+      summary: Get form to add a new student
+      description: Returns a form for creating a new student.
+      responses:
+        '200':
+          description: Student form page
+
+    post:
+      tags:
+        - Students
+      summary: Add a new student
+      description: Submits form data to create a new student.
+      requestBody:
+        description: Student data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '201':
+          description: Student created successfully
+          headers:
+            Location:
+              description: URL of the created student
+              schema:
+                type: string
+
+  /students/edit/{id}:
+    get:
+      tags:
+        - Students
+      summary: Get form to edit an existing student
+      description: Returns a form for editing a student.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the student to edit
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student edit form page
+
+    post:
+      tags:
+        - Students
+      summary: Edit an existing student
+      description: Submits form data to update an existing student.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the student to edit
+          schema:
+            type: integer
+      requestBody:
+        description: Updated student data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student updated successfully
+
+  /students/delete/{id}:
+    get:
+      tags:
+        - Students
+      summary: Delete a student
+      description: Deletes a specific student by their ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the student to delete
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Student deleted successfully
+          
+  
+  /lvaLeaders/all:
+    get:
+      tags:
+        - LVA Leaders
+      summary: List all LVA Leaders
+      description: Retrieve a list of all LVA Leaders.
+      responses:
+        '200':
+          description: A list of LVA Leaders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LvaLeader'
+
+  /lvaLeaders/add:
+    get:
+      tags:
+        - LVA Leaders
+      summary: Get form to add a new LVA Leader
+      description: Returns a form for creating a new LVA Leader.
+      responses:
+        '200':
+          description: LVA Leader form page
+
+    post:
+      tags:
+        - LVA Leaders
+      summary: Add a new LVA Leader
+      description: Submits form data to create a new LVA Leader.
+      requestBody:
+        description: LVA Leader data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LvaLeader'
+      responses:
+        '201':
+          description: LVA Leader created successfully
+          headers:
+            Location:
+              description: URL of the created LVA Leader
+              schema:
+                type: string
+
+  /lvaLeaders/edit/{id}:
+    get:
+      tags:
+        - LVA Leaders
+      summary: Get form to edit an existing LVA Leader
+      description: Returns a form for editing an LVA Leader.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA Leader to edit
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: LVA Leader edit form page
+
+    post:
+      tags:
+        - LVA Leaders
+      summary: Edit an existing LVA Leader
+      description: Submits form data to update an existing LVA Leader.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA Leader to edit
+          schema:
+            type: integer
+      requestBody:
+        description: Updated LVA Leader data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LvaLeader'
+      responses:
+        '200':
+          description: LVA Leader updated successfully
+
+  /lvaLeaders/delete/{id}:
+    get:
+      tags:
+        - LVA Leaders
+      summary: Delete an LVA Leader
+      description: Deletes a specific LVA Leader by their ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the LVA Leader to delete
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: LVA Leader deleted successfully
+
+
+components:
+  schemas:
+    Exercise:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+          
+  
+    LvaLeader:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the LVA Leader
+        name:
+          type: string
+          description: Name of the LVA Leader
+
+    Lva:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

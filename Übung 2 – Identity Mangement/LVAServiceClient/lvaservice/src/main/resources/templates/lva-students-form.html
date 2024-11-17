@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Student to LVA</title>
+</head>
+<body>
+<h1>Add Student to LVA</h1>
+
+<form th:action="@{/lvas/{id}/students/add(id=${lva.id})}" th:object="${lva}" method="post">
+    <label for="lvaName">LVA Student:</label>
+    <select id="lvaName" th:field="*{name}">
+        <option th:each="student : ${students}"
+                th:value="${student.id}"
+                th:text="${student.firstName + ' ' + student.lastName}">
+        </option>
+    </select><br>
+    <button type="submit">Save</button>
+</form>
+
+<a th:href="@{/lvas/all}">Back to List</a>
+</body>
+</html>

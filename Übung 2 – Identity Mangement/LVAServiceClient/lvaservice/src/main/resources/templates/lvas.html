@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>LVA List</title>
+</head>
+<body>
+<h1>List of LVAs</h1>
+
+<a th:href="@{/lvas/add}">Add New LVA</a>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Leader</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="lva : ${lvas}">
+        <td th:text="${lva.id}"></td>
+        <td th:text="${lva.name}"></td>
+        <td th:text="${lva.lvaLeader.firstName + ' ' + lva.lvaLeader.lastName}"></td>
+        <td>
+            <a th:href="@{/lvas/{id}/students(id=${lva.id})}">View Students</a>
+            <a th:href="@{/lvas/edit/{id}(id=${lva.id})}">Edit</a>
+            <a th:href="@{/lvas/delete/{id}(id=${lva.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+<a th:href="@{/}">Back Home</a>
+</body>
+</html>

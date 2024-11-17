@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add/Edit LVA</title>
+</head>
+<body>
+<h1 th:text="${lva.id == null ? 'Add New LVA' : 'Edit LVA'}"></h1>
+
+
+<form th:if="${lva.id} == null" th:action="@{/lvas/add}" th:object="${lva}" method="post">
+    <label for="name">LVA Name:</label>
+    <input type="text" id="name" th:field="*{name}" required/><br>
+
+    <label for="lvaLeaderId">LVA Leader:</label>
+    <select id="lvaLeaderId" th:field="*{lvaLeader.id}">
+        <option th:each="lvaLeader : ${lvaLeaders}"
+                th:value="${lvaLeader.id}"
+                th:text="${lvaLeader.firstName + ' ' + lvaLeader.lastName}">
+        </option>
+    </select><br>
+
+    <button type="submit">Save</button>
+</form>
+
+<form th:if="${lva.id} != null" th:action="@{/lvas/edit/{id}(id=${lva.id})}" th:object="${lva}" method="post">
+    <label for="name">LVA Name:</label>
+    <input type="text" id="name" th:field="*{name}" required/><br>
+
+    <label for="lvaLeaderId">LVA Leader:</label>
+    <select id="lvaLeaderId" th:field="*{lvaLeader.id}">
+        <option th:each="lvaLeader : ${lvaLeaders}"
+                th:value="${lvaLeader.id}"
+                th:text="${lvaLeader.firstName + ' ' + lvaLeader.lastName}">
+        </option>
+    </select><br>
+
+    <button type="submit">Save</button>
+</form>
+<a th:href="@{/lvas/all}">Back to List</a>
+</body>
+</html>

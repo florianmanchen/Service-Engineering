@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <title>Students</title>
+</head>
+<body>
+<h1>Students</h1>
+<a th:href="@{/lvaLeaders/add}">Add New LVA Leader</a>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="lvaLeader : ${lvaLeaders}">
+        <td th:text="${lvaLeader.id}"></td>
+        <td th:text="${lvaLeader.lastName}"></td>
+        <td th:text="${lvaLeader.firstName}"></td>
+        <td>
+            <a th:href="@{/lvaLeaders/edit/{id}(id=${lvaLeader.id})}">Edit</a>
+            <a th:href="@{/lvaLeaders/delete/{id}(id=${lvaLeader.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+<a th:href="@{/}">Back Home</a>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

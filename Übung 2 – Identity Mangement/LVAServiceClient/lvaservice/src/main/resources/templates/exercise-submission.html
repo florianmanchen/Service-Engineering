@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Exercise</title>
+</head>
+<body>
+<h1>Add New Exercise</h1>
+<form th:action="@{/exerciseSubmission/add}" th:object="${exercise}" method="post">
+
+  <label for="lvaId">LVA:</label>
+  <select id="lvaId" th:field="*{lva.id}">
+    <option th:each="lva : ${lvas}"
+            th:value="${lva.id}"
+            th:text="${lva.name}">
+    </option>
+  </select><br>
+
+  <label for="studentId">Student:</label>
+  <select id="studentId" th:field="*{student.id}">
+    <option th:each="student : ${students}"
+            th:value="${student.id}"
+            th:text="${student.firstName + ' ' + student.lastName}">
+    </option>
+  </select><br>
+
+  <label for="submission">Submission:</label>
+  <input type="text" id="submission" th:field="*{submission}" required /><br>
+  <button type="submit">Save</button>
+</form>
+<a th:href="@{/}">Back to Home</a>
+</body>
+</html>

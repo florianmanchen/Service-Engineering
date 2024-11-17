@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<h2>Welcome, <span th:text="${remoteUser}"></span>!</h2>
+<ul>
+    <li><a th:href="@{/api/lvaLeaders}">LVA Leader</a></li>
+</ul>
+<ul>
+    <li><a th:href="@{/api/students}">Student</a></li>
+</ul>
+<ul>
+    <li><a th:href="@{/api/lvas}">LVA</a></li>
+</ul>
+<ul>
+    <li><a th:href="@{/api/exerciseSubmission}">Exercise Add</a></li>
+</ul>
+<ul>
+    <li><a th:href="@{/api/exerciseCorrection}">Exercise Edit</a></li>
+</ul>
+<p><a href="/logout">Logout</a></p>
+</body>
+</html>
